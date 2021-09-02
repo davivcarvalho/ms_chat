@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "ms_chat"
+      MYSQL_DATABASE: "ms_chat"
+    ports:
+      - "3308:3306"
+    volumes:
+      - .docker/db:/var/lib/mysql
