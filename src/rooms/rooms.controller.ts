@@ -16,6 +16,13 @@ export class RoomsController {
     return this.roomsService.findAll()
   }
 
+  @Get('getByOrder/:orderId')
+  async findByOrder(@Param('orderId') orderId: string) {
+    const room = await this.roomsService.findOneOrCreateByOrder(orderId)
+
+    return { room }
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.roomsService.findOne(id)

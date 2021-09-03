@@ -28,6 +28,18 @@ export class RoomsService {
     return this.roomsRepository.findOne(id)
   }
 
+  async findOneOrCreateByOrder(orderId: string) {
+    const room = await this.roomsRepository.findOne({ orderId }, { relations: ['messages'] })
+
+    if (room) return room
+
+    return this.roomsRepository.save(
+      this.roomsRepository.create({
+        orderId
+      })
+    )
+  }
+
   // update(id: string, data: UpdateRoomDto) {
   //   return this.roomsRepository.update({ id }, data)
   // }

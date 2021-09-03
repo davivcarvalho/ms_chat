@@ -10,7 +10,7 @@ export class MessagesService {
 
   create(data: CreateMessageDto) {
     return this.messagesRepository.insert({
-      body: data.body,
+      text: data.text,
       createdBy: { id: data.createdBy },
       room: { id: data.room }
     })

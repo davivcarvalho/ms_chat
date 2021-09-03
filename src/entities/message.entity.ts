@@ -8,7 +8,7 @@ export class Message {
   id: string
 
   @Column()
-  body: string
+  text: string
 
   @ManyToOne(() => Room, room => room.messages)
   room: Room
