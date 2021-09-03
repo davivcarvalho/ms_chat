@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { RoomsModule } from './useCases/Room/rooms.module'
+import { MessagesModule } from './messages/messages.module'
+import { RoomsModule } from './rooms/rooms.module'
+import { UsersModule } from './users/users.module'
 
 @Module({
   imports: [
@@ -14,7 +16,9 @@ import { RoomsModule } from './useCases/Room/rooms.module'
       autoLoadEntities: true,
       synchronize: true
     }),
-    RoomsModule
+    MessagesModule,
+    RoomsModule,
+    UsersModule
   ]
 })
 export class AppModule {}

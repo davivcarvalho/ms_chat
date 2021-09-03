@@ -16,5 +16,5 @@ export class Room {
 
   @ManyToMany(() => User, user => user.rooms)
   @JoinTable()
-  users: User[]
+  users?: User[]
 }
