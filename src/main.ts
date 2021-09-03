@@ -1,15 +1,18 @@
 import { NestFactory } from '@nestjs/core'
-import { MicroserviceOptions, Transport } from '@nestjs/microservices'
+import { Transport } from '@nestjs/microservices'
+import { FastifyAdapter } from '@nestjs/platform-fastify'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const microservice = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+  const app = await NestFactory.create(AppModule, new FastifyAdapter())
+  app.connectMicroservice({
     transport: Transport.TCP,
     options: {
-      port: 3001,
+      port: 4001,
       host: '0.0.0.0'
     }
   })
-  await microservice.listen()
+  await app.startAllMicroservices()
+  await app.listen(3001)
 }
 bootstrap()

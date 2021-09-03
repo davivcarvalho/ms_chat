@@ -1,12 +1,11 @@
-import { Controller } from '@nestjs/common'
-import { MessagePattern } from '@nestjs/microservices'
+import { Controller, Get } from '@nestjs/common'
 import { GetRoomsService } from './getRooms.service'
 
-@Controller('')
+@Controller('chats')
 export class GetRoomsController {
   constructor(private getRoomsService: GetRoomsService) {}
 
-  @MessagePattern({ cmd: 'getRooms' })
+  @Get('/')
   async getRooms() {
     return this.getRoomsService.getAll()
   }

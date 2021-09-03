@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, Index, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Message } from './message.entity'
 import { User } from './user.entity'
 
@@ -8,6 +8,7 @@ export class Room {
   id: string
 
   @Column()
+  @Index({ unique: true })
   orderId: string
 
   @OneToMany(() => Message, message => message.room)
