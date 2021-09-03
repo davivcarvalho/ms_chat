@@ -6,8 +6,8 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Index()
-  @Column({ unique: true })
+  @Column()
+  @Index({ unique: true })
   email: string
 
   @Column()

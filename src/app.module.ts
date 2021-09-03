@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { ChatController } from './chat.controller'
+import { RoomsModule } from './useCases/Room/rooms.module'
 
 @Module({
   imports: [
@@ -13,8 +13,8 @@ import { ChatController } from './chat.controller'
       database: 'ms_chat',
       autoLoadEntities: true,
       synchronize: true
-    })
-  ],
-  controllers: [ChatController]
+    }),
+    RoomsModule
+  ]
 })
-export class ChatModule {}
+export class AppModule {}
