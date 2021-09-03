@@ -1,6 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
-import { Room } from './Room'
-import { User } from './User'
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Room } from './room.entity'
+import { User } from './user.entity'
 
 @Entity()
 export class Message {
@@ -13,8 +13,7 @@ export class Message {
   @ManyToOne(() => Room, room => room.messages)
   room: Room
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User)
   createdBy: User
 
   @CreateDateColumn()
