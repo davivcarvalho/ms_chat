@@ -12,14 +12,14 @@ export class MessagesGateway {
 
   @SubscribeMessage('onMessage')
   onMessage(@MessageBody() data: OnMessageDto) {
-    // this.server.emit(`${data.room}/onMessage`, data)
+    this.server.emit(`${data.room}/onMessage`, data)
 
     console.log('chegou', data)
 
-    // this.messagesService.create({
-    //   text: data.text,
-    //   createdBy: data.user.email,
-    //   room: data.room
-    // })
+    this.messagesService.create({
+      text: data.text,
+      createdBy: data.user._id,
+      room: data.room
+    })
   }
 }
