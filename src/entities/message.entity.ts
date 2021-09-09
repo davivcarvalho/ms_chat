@@ -5,7 +5,7 @@ import { User } from './user.entity'
 @Entity()
 export class Message {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+  _id: string
 
   @Column()
   text: string

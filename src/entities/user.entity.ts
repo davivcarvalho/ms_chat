@@ -1,10 +1,10 @@
-import { Column, Entity, Index, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, Index, ManyToMany, PrimaryColumn } from 'typeorm'
 import { Room } from './room.entity'
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
+  @PrimaryColumn({ unique: true, generated: false })
+  _id: string
 
   @Column()
   @Index({ unique: true })

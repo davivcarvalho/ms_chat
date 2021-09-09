@@ -44,7 +44,7 @@ export class RoomsService {
   //   return this.roomsRepository.update({ id }, data)
   // }
 
-  remove(id: string) {
-    return this.roomsRepository.delete({ id })
+  remove(_id: string) {
+    return this.roomsRepository.delete({ _id })
   }
 }

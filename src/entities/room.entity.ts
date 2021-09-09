@@ -5,7 +5,7 @@ import { User } from './user.entity'
 @Entity()
 export class Room {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+  _id: string
 
   @Column()
   @Index({ unique: true })

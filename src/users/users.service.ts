@@ -11,17 +11,18 @@ export class UsersService {
 
   create(data: CreateUserDto) {
     return this.usersRepository.insert({
+      _id: data.id,
       email: data.email,
       name: data.name,
       avatar: data.avatar
     })
   }
 
-  update(id: string, data: UpdateUserDto) {
-    return this.usersRepository.update({ id }, data)
+  update(_id: string, data: UpdateUserDto) {
+    return this.usersRepository.update({ _id }, data)
   }
 
-  remove(id: string) {
-    return this.usersRepository.delete({ id })
+  remove(_id: string) {
+    return this.usersRepository.delete({ _id })
   }
 }

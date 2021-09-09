@@ -11,8 +11,8 @@ export class MessagesService {
   create(data: CreateMessageDto) {
     return this.messagesRepository.insert({
       text: data.text,
-      createdBy: { id: data.createdBy },
-      room: { id: data.room }
+      createdBy: { _id: data.createdBy },
+      room: { _id: data.room }
     })
   }
 
@@ -21,11 +21,11 @@ export class MessagesService {
     return { messages, count }
   }
 
-  findOne(id: string) {
-    return this.messagesRepository.findOne(id, { relations: ['room', 'createdBy'] })
+  findOne(_id: string) {
+    return this.messagesRepository.findOne(_id, { relations: ['room', 'createdBy'] })
   }
 
-  remove(id: string) {
-    return this.messagesRepository.delete({ id })
+  remove(_id: string) {
+    return this.messagesRepository.delete({ _id })
   }
 }
