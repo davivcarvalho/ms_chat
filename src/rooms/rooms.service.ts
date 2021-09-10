@@ -29,7 +29,7 @@ export class RoomsService {
   }
 
   async findOneOrCreateByOrder(orderId: string) {
-    const room = await this.roomsRepository.findOne({ orderId }, { relations: ['messages'] })
+    const room = await this.roomsRepository.findOne({ orderId }, { relations: ['messages', 'messages.user'] })
 
     if (room) return room
 

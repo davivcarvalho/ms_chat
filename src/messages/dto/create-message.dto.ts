@@ -9,5 +9,5 @@ export class CreateMessageDto {
   room: string
 
   @IsUUID()
-  createdBy: string
+  user: string
 }

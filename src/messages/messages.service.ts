@@ -11,18 +11,18 @@ export class MessagesService {
   create(data: CreateMessageDto) {
     return this.messagesRepository.insert({
       text: data.text,
-      createdBy: { _id: data.createdBy },
+      user: { _id: data.user },
       room: { _id: data.room }
     })
   }
 
   async findAll() {
-    const [messages, count] = await this.messagesRepository.findAndCount({ relations: ['room', 'createdBy'] })
+    const [messages, count] = await this.messagesRepository.findAndCount({ relations: ['room', 'user'] })
     return { messages, count }
   }
 
   findOne(_id: string) {
-    return this.messagesRepository.findOne(_id, { relations: ['room', 'createdBy'] })
+    return this.messagesRepository.findOne(_id, { relations: ['room', 'user'] })
   }
 
   remove(_id: string) {

@@ -14,7 +14,7 @@ export class Message {
   room: Room
 
   @ManyToOne(() => User)
-  createdBy: User
+  user: User
 
   @CreateDateColumn()
   createdAt: Date
