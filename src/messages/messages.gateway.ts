@@ -15,7 +15,7 @@ export class MessagesGateway {
     client.to(data.room).emit('created_message', {
       text: data.text,
       user: data.user
-    })
+    }) // Send messages to all users in room except the sender
 
     this.messagesService.create({
       text: data.text,
