@@ -12,17 +12,8 @@ export class MessagesGateway {
 
   @SubscribeMessage('onMessage')
   onMessage(@MessageBody() data: OnMessageDto, @ConnectedSocket() client: Socket) {
-    client.to(data.room).emit('created_message', {
-      text: data.text,
-      user: data.user,
-      createdAt: data.createdAt
-    }) // Send messages to all users in room except the sender
+    client.to(data.room).emit('created_message', data.messages) // Send messages to all users in room except the sender
 
-    this.messagesService.create({
-      text: data.text,
-      user: data.user._id,
-      room: data.room,
-      createdAt: data.createdAt
-    })
+    this.messagesService.createMany(data)
   }
 }

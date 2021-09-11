@@ -1,20 +1,27 @@
-import { IsDate, IsString } from 'class-validator'
+import { IsDate, IsString, IsUUID } from 'class-validator'
 
 type User = {
   _id: string
   name: string
   avatar: string
 }
-export class OnMessageDto {
+class Message {
+  @IsUUID()
+  _id: string
+
   @IsString()
   text: string
 
   @IsString()
   user: User
 
+  @IsDate()
+  createdAt: Date
+}
+
+export class OnMessageDto {
   @IsString()
   room: string
 
-  @IsDate()
-  createdAt: Date
+  messages: Message[]
 }
