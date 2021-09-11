@@ -29,7 +29,14 @@ export class RoomsService {
   }
 
   async findOneOrCreateByOrder(orderId: string) {
-    const room = await this.roomsRepository.findOne({ orderId }, { relations: ['messages', 'messages.user'] })
+    // const room = await this.roomsRepository.findOne({ orderId }, { relations: ['messages', 'messages.user'] })
+    const room = await this.roomsRepository
+      .createQueryBuilder('order')
+      .where({ orderId })
+      .leftJoinAndSelect('order.messages', 'messages')
+      .leftJoinAndSelect('messages.user', 'user')
+      .addOrderBy('messages.createdAt', 'DESC')
+      .getOne()
 
     if (room) return room
 
