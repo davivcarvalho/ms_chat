@@ -2,6 +2,7 @@
 /.docker
 /dist
 /node_modules
+/storage/audios/**
 
 # Logs
 logs

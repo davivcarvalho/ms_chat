@@ -1,10 +1,11 @@
 import { NestFactory } from '@nestjs/core'
 import { Transport } from '@nestjs/microservices'
-import { FastifyAdapter } from '@nestjs/platform-fastify'
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { AppModule } from './app.module'
+import FastifyMultpartAdapter from 'fastify-multipart'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, new FastifyAdapter())
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter())
   app.connectMicroservice({
     transport: Transport.TCP,
     options: {
@@ -12,6 +13,9 @@ async function bootstrap() {
       host: '0.0.0.0'
     }
   })
+  app.register(FastifyMultpartAdapter)
+  app.enableCors()
+
   await app.startAllMicroservices()
   await app.listen(3001)
 }
