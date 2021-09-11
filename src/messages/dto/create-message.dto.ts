@@ -1,4 +1,4 @@
-import { IsString, IsUUID, Length } from 'class-validator'
+import { IsDate, IsString, IsUUID, Length } from 'class-validator'
 
 export class CreateMessageDto {
   @IsString()
@@ -10,4 +10,7 @@ export class CreateMessageDto {
 
   @IsUUID()
   user: string
+
+  @IsDate()
+  createdAt: Date
 }

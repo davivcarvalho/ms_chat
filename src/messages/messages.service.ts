@@ -12,7 +12,8 @@ export class MessagesService {
     return this.messagesRepository.insert({
       text: data.text,
       user: { _id: data.user },
-      room: { _id: data.room }
+      room: { _id: data.room },
+      createdAt: data.createdAt
     })
   }
 

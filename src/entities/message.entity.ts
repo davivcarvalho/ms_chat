@@ -16,6 +16,6 @@ export class Message {
   @ManyToOne(() => User)
   user: User
 
-  @CreateDateColumn()
+  @Column()
   createdAt: Date
 }

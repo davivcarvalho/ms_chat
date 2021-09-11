@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator'
+import { IsDate, IsString } from 'class-validator'
 
 type User = {
   _id: string
@@ -14,4 +14,7 @@ export class OnMessageDto {
 
   @IsString()
   room: string
+
+  @IsDate()
+  createdAt: Date
 }
