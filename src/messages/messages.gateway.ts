@@ -1,5 +1,5 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer } from '@nestjs/websockets'
-import { Server } from 'socket.io'
+import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, ConnectedSocket } from '@nestjs/websockets'
+import { Server, Socket } from 'socket.io'
 import { OnMessageDto } from './dto/on-message.dto'
 import { MessagesService } from './messages.service'
 
@@ -11,10 +11,10 @@ export class MessagesGateway {
   constructor(private messagesService: MessagesService) {}
 
   @SubscribeMessage('onMessage')
-  onMessage(@MessageBody() data: OnMessageDto) {
-    this.server.to(data.room).emit('created_message', {
+  onMessage(@MessageBody() data: OnMessageDto, @ConnectedSocket() client: Socket) {
+    client.to(data.room).emit('created_message', {
       text: data.text,
-      user: data.user._id
+      user: data.user
     })
 
     this.messagesService.create({
