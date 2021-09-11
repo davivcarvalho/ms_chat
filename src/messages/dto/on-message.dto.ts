@@ -17,6 +17,14 @@ class Message {
 
   @IsDate()
   createdAt: Date
+
+  image?: string
+  video?: string
+  audio?: string
+  system?: boolean
+  sent?: boolean
+  received?: boolean
+  pending?: boolean
 }
 
 export class OnMessageDto {
