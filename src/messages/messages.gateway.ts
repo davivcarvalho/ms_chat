@@ -16,4 +16,14 @@ export class MessagesGateway {
 
     this.messagesService.createMany(data)
   }
+
+  @SubscribeMessage('user_is_typing')
+  onUserTyping(@ConnectedSocket() client: Socket, @MessageBody() roomId: string) {
+    client.to(roomId).emit('user_is_typing')
+  }
+
+  @SubscribeMessage('user_isnt_typing')
+  onUserStopTyping(@ConnectedSocket() client: Socket, @MessageBody() roomId: string) {
+    client.to(roomId).emit('user_isnt_typing')
+  }
 }

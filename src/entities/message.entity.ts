@@ -19,25 +19,25 @@ export class Message {
   @Column()
   createdAt: Date
 
-  @Column()
+  @Column({ nullable: true })
   image?: string
 
-  @Column()
+  @Column({ nullable: true })
   video?: string
 
-  @Column()
+  @Column({ nullable: true })
   audio?: string
 
-  @Column()
+  @Column({ nullable: true })
   system?: boolean
 
-  @Column()
+  @Column({ nullable: true })
   sent?: boolean
 
-  @Column()
+  @Column({ nullable: true })
   received?: boolean
 
-  @Column()
+  @Column({ nullable: true })
   pending?: boolean
 }
 
