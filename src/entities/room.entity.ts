@@ -1,4 +1,13 @@
-import { Column, Entity, Index, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn
+} from 'typeorm'
 import { Message } from './message.entity'
 import { User } from './user.entity'
 
@@ -17,4 +26,7 @@ export class Room {
   @ManyToMany(() => User, user => user.rooms)
   @JoinTable()
   users?: User[]
+
+  @CreateDateColumn()
+  createdAt: Date
 }

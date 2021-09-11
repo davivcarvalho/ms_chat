@@ -42,7 +42,8 @@ export class RoomsService {
 
     return this.roomsRepository.save(
       this.roomsRepository.create({
-        orderId
+        orderId,
+        messages: []
       })
     )
   }

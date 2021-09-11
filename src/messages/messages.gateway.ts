@@ -12,7 +12,7 @@ export class MessagesGateway {
 
   @SubscribeMessage('onMessage')
   onMessage(@MessageBody() data: OnMessageDto, @ConnectedSocket() client: Socket) {
-    client.to(data.room).emit('created_message', data.messages) // Send messages to all users in room except the sender
+    client.to(data.room).emit('created_message', data.messages) // Send messages to all users in room except to the sender
 
     this.messagesService.createMany(data)
   }
