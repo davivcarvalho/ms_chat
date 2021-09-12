@@ -1,34 +1,41 @@
-import { HttpException, BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { createWriteStream } from 'fs'
 import { pipeline } from 'stream/promises'
 
 @Injectable()
 export class UploadHelper {
-  async uploadFile(request: any, reply: any): Promise<any> {
-    if (!request.isMultipart()) {
-      reply.send(new BadRequestException('Request is not multipart'))
-      return
-    }
+  uploadFile(request: any) {
+    return new Promise<any>(async (resolve, reject) => {
+      const body = {}
 
-    const mp = await request.multipart(this.handler, onEnd)
-    // mp.on('field', function (key: any, value: any) {
-    //   console.log('form-data', key, value)
-    // })
-    async function onEnd(err: any) {
-      if (err) {
-        reply.send(new HttpException('Internal server error', 500))
-        return
+      if (!request.isMultipart()) reject('Is not a multpart request')
+
+      const busboy = await request.multipart(this.handler, onEnd)
+
+      busboy.on('file', (fieldname, file, filename, enconding, mimetype) => {
+        body[fieldname] = { filename, mimetype }
+      })
+
+      busboy.on('field', function (key: any, value: any) {
+        body[key] = value
+      })
+
+      async function onEnd(err: any) {
+        if (err) reject(err)
       }
-      reply.code(200).send('Data uploaded successfully')
-    }
+
+      busboy.on('finish', () => {
+        resolve(body)
+      })
+    })
   }
 
   async handler(field: string, file: any, filename: string, encoding: string, mimetype: string): Promise<void> {
-    console.log(field, filename, mimetype)
-
     let path = './storage/'
 
     if (mimetype.includes('audio')) path += 'audios'
+    if (mimetype.includes('video')) path += 'videos'
+    if (mimetype.includes('image')) path += 'images'
 
     const writeStream = createWriteStream(`${path}/${filename}`)
     try {

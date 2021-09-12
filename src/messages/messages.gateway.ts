@@ -1,5 +1,6 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, ConnectedSocket } from '@nestjs/websockets'
 import { Server, Socket } from 'socket.io'
+import { Message } from 'src/entities/message.entity'
 import { OnMessageDto } from './dto/on-message.dto'
 import { MessagesService } from './messages.service'
 
@@ -15,6 +16,11 @@ export class MessagesGateway {
     client.to(data.room).emit('created_message', data.messages) // Send messages to all users in room except to the sender
 
     this.messagesService.createMany(data)
+  }
+
+  @SubscribeMessage('created_file_message')
+  onCreatedFileMessage(@MessageBody() message: Message, @ConnectedSocket() client: Socket) {
+    client.to(message.room._id).emit('created_message', [message])
   }
 
   @SubscribeMessage('user_is_typing')

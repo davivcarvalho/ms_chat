@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Req, Res } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete, Req } from '@nestjs/common'
 import { MessagesService } from './messages.service'
 import { CreateMessageDto } from './dto/create-message.dto'
 import { UploadHelper } from 'src/helpers/fileUpload.helper'
@@ -13,8 +13,12 @@ export class MessagesController {
   }
 
   @Post('audio')
-  async createAudioMessage(@Req() request: any, @Res() reponse: any) {
-    return await this.uploadHelper.uploadFile(request, reponse)
+  async createAudioMessage(@Req() request: any) {
+    const fields = await this.uploadHelper.uploadFile(request)
+
+    const message = await this.messagesService.createFileMessage(fields)
+
+    return { message }
   }
 
   @Get()

@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { FileStreamController } from './helpers/fileStream.provider'
 import { MessagesModule } from './messages/messages.module'
 import { RoomsModule } from './rooms/rooms.module'
 import { UsersModule } from './users/users.module'
 
 @Module({
+  controllers: [FileStreamController],
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
