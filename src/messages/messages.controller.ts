@@ -12,10 +12,9 @@ export class MessagesController {
     return this.messagesService.create(createMessageDto)
   }
 
-  @Post('audio')
+  @Post('file')
   async createAudioMessage(@Req() request: any) {
     const fields = await this.uploadHelper.uploadFile(request)
-
     const message = await this.messagesService.createFileMessage(fields)
 
     return { message }
