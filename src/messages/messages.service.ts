@@ -42,12 +42,9 @@ export class MessagesService {
       createdAt: new Date()
     }
 
-    if (body.file.mimetype.includes('audio'))
-      Reflect.set(messageData, 'audio', `http://10.0.2.2:3001/storage/audios/${body.file.filename}`)
-    if (body.file.mimetype.includes('image'))
-      Reflect.set(messageData, 'image', `http://10.0.2.2:3001/storage/images/${body.file.filename}`)
-    if (body.file.mimetype.includes('video'))
-      Reflect.set(messageData, 'video', `http://10.0.2.2:3001/storage/videos/${body.file.filename}`)
+    if (body.file.mimetype.includes('audio')) Reflect.set(messageData, 'audio', `/audios/${body.file.filename}`)
+    if (body.file.mimetype.includes('image')) Reflect.set(messageData, 'image', `/images/${body.file.filename}`)
+    if (body.file.mimetype.includes('video')) Reflect.set(messageData, 'video', `/videos/${body.file.filename}`)
 
     return this.messagesRepository.save(this.messagesRepository.create(messageData))
   }
