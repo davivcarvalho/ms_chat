@@ -14,12 +14,18 @@ export class UsersService {
       _id: data.id,
       email: data.email,
       name: data.name,
-      avatar: data.avatar
+      avatar: data.avatar,
+      notificationToken: data.notificationToken
     })
   }
 
   update(_id: string, data: UpdateUserDto) {
-    return this.usersRepository.update({ _id }, data)
+    return this.usersRepository.update(
+      { _id },
+      {
+        notificationToken: data.notificationToken
+      }
+    )
   }
 
   remove(_id: string) {

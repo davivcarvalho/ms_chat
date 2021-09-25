@@ -10,6 +10,9 @@ export class User {
   @Index({ unique: true })
   email: string
 
+  @Column({ nullable: true })
+  notificationToken?: string
+
   @Column()
   name: string
 

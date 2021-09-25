@@ -11,5 +11,8 @@ export class CreateUserDto {
   name: string
 
   @IsString()
+  notificationToken?: string
+
+  @IsString()
   avatar: string
 }
