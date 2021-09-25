@@ -9,7 +9,9 @@ export class MessagesController {
 
   @Post()
   create(@Body() createMessageDto: CreateMessageDto) {
-    return this.messagesService.create(createMessageDto)
+    const message = this.messagesService.create(createMessageDto)
+
+    return message
   }
 
   @Post('file')

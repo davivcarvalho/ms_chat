@@ -12,10 +12,10 @@ export class MessagesGateway {
   constructor(private messagesService: MessagesService) {}
 
   @SubscribeMessage('onMessage')
-  onMessage(@MessageBody() data: OnMessageDto, @ConnectedSocket() client: Socket) {
+  async onMessage(@MessageBody() data: OnMessageDto, @ConnectedSocket() client: Socket) {
     client.to(data.room).emit('created_message', data.messages) // Send messages to all users in room except to the sender
 
-    this.messagesService.createMany(data)
+    await this.messagesService.createMany(data)
   }
 
   @SubscribeMessage('created_file_message')

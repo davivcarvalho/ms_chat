@@ -52,6 +52,16 @@ export class RoomsService {
   //   return this.roomsRepository.update({ id }, data)
   // }
 
+  async subscribeUser(roomId: string, userId: string) {
+    const room = await this.roomsRepository.findOne(roomId, { relations: ['users'] })
+
+    if (!!room.users.find(u => u._id === userId)) return
+
+    room.users.push(await this.usersRepository.findOneOrFail({ _id: userId }))
+
+    return this.roomsRepository.save(room)
+  }
+
   remove(_id: string) {
     return this.roomsRepository.delete({ _id })
   }

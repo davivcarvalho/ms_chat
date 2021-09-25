@@ -11,8 +11,10 @@ export class RoomsGateway {
   constructor(private roomsService: RoomsService) {}
 
   @SubscribeMessage('enterToRoom')
-  onEnterToRoom(@MessageBody() data: OnEnterToRoomDto, @ConnectedSocket() client: Socket) {
+  async onEnterToRoom(@MessageBody() data: OnEnterToRoomDto, @ConnectedSocket() client: Socket) {
     client.join(data.roomId)
+
+    await this.roomsService.subscribeUser(data.roomId, data.userId)
 
     console.log(`[Room] - Client connected to room: ${data.roomId}`)
   }
