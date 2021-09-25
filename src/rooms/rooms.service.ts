@@ -52,7 +52,9 @@ export class RoomsService {
   //   return this.roomsRepository.update({ id }, data)
   // }
 
-  async subscribeUser(roomId: string, userId: string) {
+  async subscribeUser(roomId: string, userId: string, clientId: string) {
+    await this.usersRepository.update(userId, { clientId })
+
     const room = await this.roomsRepository.findOne(roomId, { relations: ['users'] })
 
     if (!!room.users.find(u => u._id === userId)) return

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { Expo } from 'expo-server-sdk'
 
 @Injectable()
-export class NotificationService {
+export class NotificationsService {
   constructor(private expoClient = new Expo()) {}
 
   notify(usersNotificationsToken: string[], title: string, message: string) {

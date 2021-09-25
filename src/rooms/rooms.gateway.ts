@@ -12,9 +12,9 @@ export class RoomsGateway {
 
   @SubscribeMessage('enterToRoom')
   async onEnterToRoom(@MessageBody() data: OnEnterToRoomDto, @ConnectedSocket() client: Socket) {
-    client.join(data.roomId)
+    await client.join(data.roomId)
 
-    await this.roomsService.subscribeUser(data.roomId, data.userId)
+    await this.roomsService.subscribeUser(data.roomId, data.userId, client.id)
 
     console.log(`[Room] - Client connected to room: ${data.roomId}`)
   }

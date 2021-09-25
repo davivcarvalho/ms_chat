@@ -13,6 +13,9 @@ export class User {
   @Column({ nullable: true })
   notificationToken?: string
 
+  @Column({ nullable: true })
+  clientId: string
+
   @Column()
   name: string
 

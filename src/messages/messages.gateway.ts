@@ -16,6 +16,7 @@ export class MessagesGateway {
     client.to(data.room).emit('created_message', data.messages) // Send messages to all users in room except to the sender
 
     await this.messagesService.createMany(data)
+    await this.messagesService.notifyUsers([...(await this.server.allSockets())], data.room)
   }
 
   @SubscribeMessage('created_file_message')

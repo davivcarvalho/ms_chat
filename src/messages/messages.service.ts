@@ -6,7 +6,7 @@ import { CreateMessageDto } from './dto/create-message.dto'
 import { OnMessageDto } from './dto/on-message.dto'
 import { v4 as uuid } from 'uuid'
 import { Room } from 'src/entities/room.entity'
-import { NotificationService } from 'src/helpers/notification.provider'
+import { NotificationsService } from 'src/helpers/notifications.provider'
 @Injectable()
 export class MessagesService {
   constructor(
@@ -59,16 +59,6 @@ export class MessagesService {
       data.messages.map(message => ({ ...message, room: { _id: data.room } }))
     )
 
-    const room = await this.roomsRepository.findOne(data.room, { relations: ['users'] })
-
-    const notificationService = new NotificationService()
-
-    notificationService.notify(
-      room.users.map(user => user.notificationToken),
-      'Nova mensagem',
-      'Tem mensagem nova pra você no chat.'
-    )
-
     return result
   }
 
@@ -83,5 +73,19 @@ export class MessagesService {
 
   remove(_id: string) {
     return this.messagesRepository.delete({ _id })
+  }
+
+  async notifyUsers(connectedClients: string[], roomId: string) {
+    const room = await this.roomsRepository.findOneOrFail(roomId, { relations: ['users'] })
+
+    const nonConectedUsers = room.users.filter(user => !connectedClients.includes(user.clientId))
+
+    const notificationsService = new NotificationsService()
+
+    notificationsService.notify(
+      nonConectedUsers.map(u => u.notificationToken),
+      'Nova mensagem',
+      'Tem nova mensagem para você!'
+    )
   }
 }
