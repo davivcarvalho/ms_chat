@@ -27,8 +27,4 @@ export class UsersService {
       }
     )
   }
-
-  remove(_id: string) {
-    return this.usersRepository.delete({ _id })
-  }
 }
