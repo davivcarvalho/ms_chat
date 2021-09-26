@@ -17,9 +17,4 @@ export class UsersController {
   update(@Payload() updateUserDto: UpdateUserDto) {
     return this.usersService.update(updateUserDto.id, updateUserDto)
   }
-
-  // @EventPattern('user_removed')
-  // remove(@Payload() id: string) {
-  //   return this.usersService.remove(id)
-  // }
 }
