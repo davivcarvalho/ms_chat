@@ -35,7 +35,7 @@ export class RoomsService {
       .where({ orderId })
       .leftJoinAndSelect('order.messages', 'messages')
       .leftJoinAndSelect('messages.user', 'user')
-      .addOrderBy('messages.createdAt', 'DESC')
+      .addOrderBy('messages.createdAt', 'ASC')
       .getOne()
 
     if (room) return room
