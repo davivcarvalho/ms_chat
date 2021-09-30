@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common'
-import { createWriteStream } from 'fs'
+import { createWriteStream, existsSync, mkdirSync } from 'fs'
 import { pipeline } from 'stream/promises'
+import { homedir } from 'os'
+
+export const storagePath = `${homedir}/storage`
 
 @Injectable()
 export class UploadHelper {
+  constructor() {
+    this.ensurePathsExists()
+  }
+
   uploadFile(request: any) {
     return new Promise<any>(async (resolve, reject) => {
       const body = {}
@@ -31,11 +38,11 @@ export class UploadHelper {
   }
 
   async handler(field: string, file: any, filename: string, encoding: string, mimetype: string): Promise<void> {
-    let path = './storage/'
+    let path = storagePath
 
-    if (mimetype.includes('audio')) path += 'audios'
-    if (mimetype.includes('video')) path += 'videos'
-    if (mimetype.includes('image')) path += 'images'
+    if (mimetype.includes('audio')) path += '/audios'
+    if (mimetype.includes('video')) path += '/videos'
+    if (mimetype.includes('image')) path += '/images'
 
     const writeStream = createWriteStream(`${path}/${filename}`)
     try {
@@ -43,5 +50,11 @@ export class UploadHelper {
     } catch (err) {
       console.error('Pipeline failed', err)
     }
+  }
+
+  ensurePathsExists() {
+    !existsSync(`${storagePath}/videos`) && mkdirSync(`${storagePath}/videos`, { recursive: true })
+    !existsSync(`${storagePath}/images`) && mkdirSync(`${storagePath}/images`, { recursive: true })
+    !existsSync(`${storagePath}/audios`) && mkdirSync(`${storagePath}/audios`, { recursive: true })
   }
 }
