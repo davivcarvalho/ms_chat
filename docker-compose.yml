@@ -2,12 +2,13 @@ version: '3'
 
 services:
   db:
-    image: mysql
+    image: postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "ms_chat"
-      MYSQL_DATABASE: "ms_chat"
+      POSTGRES_USER: "aperam"
+      POSTGRES_PASSWORD: "aperam"
+      POSTGRES_DB: "aperam"
     ports:
-      - "3308:3306"
+      - "5433:5432"
     volumes:
-      - .docker/db:/var/lib/mysql
+      - .docker/db:/var/lib/postgresql/data
