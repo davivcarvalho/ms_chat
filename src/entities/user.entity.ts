@@ -8,7 +8,7 @@ export class User {
 
   @Column()
   @Index({ unique: true })
-  email: string
+  username: string
 
   @Column({ nullable: true })
   notificationToken?: string

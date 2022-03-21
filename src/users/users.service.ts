@@ -12,7 +12,7 @@ export class UsersService {
   create(data: CreateUserDto) {
     return this.usersRepository.insert({
       _id: data.id,
-      email: data.email,
+      username: data.username,
       name: data.name,
       avatar: data.avatar,
       notificationToken: data.notificationToken
