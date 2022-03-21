@@ -17,6 +17,6 @@ async function bootstrap() {
   app.enableCors()
 
   await app.startAllMicroservices()
-  await app.listen(3001, '0.0.0.0')
+  await app.listen(process.env.PORT, '0.0.0.0')
 }
 bootstrap()
