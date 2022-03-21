@@ -20,7 +20,7 @@ import { UsersModule } from './users/users.module'
         database: configService.get('DB_SCHEMA'),
         autoLoadEntities: true,
         synchronize: process.env.NODE_ENV !== 'production',
-        ssl: process.env.NODE_ENV === 'production'
+        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
       }),
       inject: [ConfigService]
     }),
