@@ -10,7 +10,9 @@ async function bootstrap() {
   app.connectMicroservice({
     transport: Transport.REDIS,
     options: {
-      url: process.env.REDIS_URL
+      url: process.env.REDIS_URL,
+      retryDelay: 30 * 1000, // 10 seconds
+      retryAttempts: 10
     }
   })
   app.register(FastifyMultpartAdapter)
