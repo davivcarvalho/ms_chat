@@ -11,7 +11,8 @@ async function bootstrap() {
     transport: Transport.REDIS,
     options: {
       host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT
+      port: process.env.REDIS_PORT,
+      password: process.env.REDIS_PASSWORD
     }
   })
   app.register(FastifyMultpartAdapter)
