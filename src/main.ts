@@ -6,11 +6,12 @@ import FastifyMultpartAdapter from 'fastify-multipart'
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter())
+  console.log()
   app.connectMicroservice({
-    transport: Transport.TCP,
+    transport: Transport.REDIS,
     options: {
-      port: 4001,
-      host: '0.0.0.0'
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT
     }
   })
   app.register(FastifyMultpartAdapter)
