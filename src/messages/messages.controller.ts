@@ -8,7 +8,6 @@ export class MessagesController {
   @Post()
   async create(@Req() request: any) {
     const result = await this.messagesService.createWithFile(request)
-    console.log(result)
     return result
   }
 
