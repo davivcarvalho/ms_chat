@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Message } from 'src/entities/message.entity'
 import { Repository } from 'typeorm'
@@ -7,16 +7,19 @@ import { OnMessageDto } from './dto/on-message.dto'
 import { v4 as uuid } from 'uuid'
 import { Room } from 'src/entities/room.entity'
 import { NotificationsService } from 'src/helpers/notifications.provider'
+import { FileStorageService } from 'src/helpers/fileStorage.provider'
 @Injectable()
 export class MessagesService {
   constructor(
     @InjectRepository(Message) private messagesRepository: Repository<Message>,
-    @InjectRepository(Room) private roomsRepository: Repository<Room>
+    @InjectRepository(Room) private roomsRepository: Repository<Room>,
+    private fileStorageService: FileStorageService
   ) {}
 
   create(data: CreateMessageDto) {
     return this.messagesRepository.save(
       this.messagesRepository.create({
+        ...data,
         _id: data._id,
         text: data.text,
         user: { _id: data.user },
@@ -26,32 +29,56 @@ export class MessagesService {
     )
   }
 
-  async createFileMessage(data: any) {
-    const body = {} as {
-      user: { _id: string; avatar: string; email: string }
-      roomId: string
-      file: { filename: string; mimetype: string }
+  async createWithFile(body: any) {
+    const message = {} as CreateMessageDto
+
+    if (!body.isMultipart()) throw new BadRequestException('Invalid payload type!')
+
+    function onEnd(error: any) {
+      if (error) throw new BadRequestException(error)
     }
 
-    if (!data.user || !data.roomId || !data.file) throw new HttpException('Missing body to create message', 400)
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    const busboy = await body.multipart(() => {}, onEnd)
 
-    Reflect.set(body, 'user', JSON.parse(data.user))
-    Reflect.set(body, 'roomId', data.roomId)
-    Reflect.set(body, 'file', data.file)
+    const uploadFile = new Promise<void>(async (resolve, reject) => {
+      busboy.on('file', async (fieldname, file, filename, encoding, mimetype) => {
+        try {
+          const uploadResult = await this.fileStorageService.handle(file, filename, mimetype)
 
-    const messageData = {
-      _id: uuid(),
-      text: '',
-      user: body.user,
-      room: { _id: body.roomId },
-      createdAt: new Date()
+          message[uploadResult.type] = uploadResult.url
+
+          resolve()
+        } catch (error) {
+          reject(error)
+        }
+      })
+    })
+
+    const parseFields = new Promise<void>((resolve, reject) => {
+      busboy.on('field', function (key: any, value) {
+        if (key === 'user') {
+          message[key] = JSON.parse(value)._id
+          return
+        }
+        message[key] = value
+      })
+
+      busboy.on('finish', () => {
+        resolve()
+      })
+    })
+
+    if (!message._id) message._id = uuid()
+    if (!message.createdAt) message.createdAt = new Date()
+
+    try {
+      await Promise.all([uploadFile, parseFields])
+    } catch (error) {
+      throw new BadRequestException(error)
     }
 
-    if (body.file.mimetype.includes('audio')) Reflect.set(messageData, 'audio', `/audios/${body.file.filename}`)
-    if (body.file.mimetype.includes('image')) Reflect.set(messageData, 'image', `/images/${body.file.filename}`)
-    if (body.file.mimetype.includes('video')) Reflect.set(messageData, 'video', `/videos/${body.file.filename}`)
-
-    return this.messagesRepository.save(this.messagesRepository.create(messageData))
+    return this.create(message)
   }
 
   async createMany(data: OnMessageDto) {

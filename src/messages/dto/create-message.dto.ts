@@ -2,7 +2,7 @@ import { IsDate, IsString, IsUUID, Length } from 'class-validator'
 
 export class CreateMessageDto {
   @IsUUID()
-  _id: string
+  _id?: string
 
   @IsString()
   @Length(1, 100)

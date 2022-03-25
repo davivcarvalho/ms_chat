@@ -7,7 +7,7 @@ export class Message {
   @PrimaryColumn('uuid', { generated: false })
   _id: string
 
-  @Column()
+  @Column({ nullable: true })
   text: string
 
   @ManyToOne(() => Room, room => room.messages)

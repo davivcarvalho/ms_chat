@@ -1,25 +1,15 @@
-import { Controller, Get, Post, Body, Param, Delete, Req } from '@nestjs/common'
+import { Controller, Get, Post, Param, Delete, Req } from '@nestjs/common'
 import { MessagesService } from './messages.service'
-import { CreateMessageDto } from './dto/create-message.dto'
-import { UploadHelper } from 'src/helpers/fileUpload.helper'
 
 @Controller('messages')
 export class MessagesController {
-  constructor(private messagesService: MessagesService, private uploadHelper: UploadHelper) {}
+  constructor(private messagesService: MessagesService) {}
 
   @Post()
-  create(@Body() createMessageDto: CreateMessageDto) {
-    const message = this.messagesService.create(createMessageDto)
-
-    return message
-  }
-
-  @Post('file')
-  async createAudioMessage(@Req() request: any) {
-    const fields = await this.uploadHelper.uploadFile(request)
-    const message = await this.messagesService.createFileMessage(fields)
-
-    return { message }
+  async create(@Req() request: any) {
+    const result = await this.messagesService.createWithFile(request)
+    console.log(result)
+    return result
   }
 
   @Get()
