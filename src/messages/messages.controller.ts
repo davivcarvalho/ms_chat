@@ -7,8 +7,8 @@ export class MessagesController {
 
   @Post()
   async create(@Req() request: any) {
-    const result = await this.messagesService.createWithFile(request)
-    return result
+    const message = await this.messagesService.createWithFile(request)
+    return { message }
   }
 
   @Get()
