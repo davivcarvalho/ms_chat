@@ -17,6 +17,7 @@ async function bootstrap() {
   })
   app.register(FastifyMultpartAdapter)
   app.enableCors()
+  app.enableShutdownHooks()
 
   await app.startAllMicroservices()
   await app.listen(process.env.PORT, '0.0.0.0')

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { HealthCheckModule } from './helpers/health.provider'
 import { MessagesModule } from './messages/messages.module'
 import { RoomsModule } from './rooms/rooms.module'
 import { UsersModule } from './users/users.module'
@@ -28,7 +29,8 @@ import { UsersModule } from './users/users.module'
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: process.env.NODE_ENV !== 'production' ? '.development.env' : '.env'
-    })
+    }),
+    HealthCheckModule
   ]
 })
 export class AppModule {}
