@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common'
-import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices'
+import { EventPattern, Payload } from '@nestjs/microservices'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -8,12 +8,12 @@ import { UpdateUserDto } from './dto/update-user.dto'
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @EventPattern('user_created')
+  @EventPattern('chat.users.created')
   async create(@Payload() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto)
   }
 
-  @EventPattern('user_updated')
+  @EventPattern('chat.users.updated')
   async update(@Payload() updateUserDto: UpdateUserDto) {
     return this.usersService.update(updateUserDto.id, updateUserDto)
   }
