@@ -27,8 +27,7 @@ import { UsersModule } from './users/users.module'
     RoomsModule,
     UsersModule,
     ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: process.env.NODE_ENV !== 'production' ? '.development.env' : '.env'
+      isGlobal: true
     }),
     HealthCheckModule
   ]
