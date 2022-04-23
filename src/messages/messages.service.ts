@@ -8,6 +8,7 @@ import { v4 as uuid } from 'uuid'
 import { Room } from 'src/entities/room.entity'
 import { NotificationsService } from 'src/helpers/notifications.provider'
 import { FileStorageService } from 'src/helpers/fileStorage.provider'
+import { User } from 'src/entities/user.entity'
 @Injectable()
 export class MessagesService {
   constructor(
@@ -103,14 +104,20 @@ export class MessagesService {
   }
 
   async notifyUsers(connectedClients: string[], roomId: string) {
-    const room = await this.roomsRepository.findOneOrFail(roomId, { relations: ['users'] })
-
-    const nonConectedUsers = room.users.filter(user => !connectedClients.includes(user.clientId))
+    const disconnectedRoomUsers = (
+      await this.roomsRepository
+        .createQueryBuilder('room')
+        .leftJoinAndSelect('room.users', 'user', 'user.clientId NOT IN (:...clients)', {
+          clients: connectedClients
+        })
+        .where('room._id = :id', { id: roomId })
+        .getOneOrFail()
+    ).users
 
     const notificationsService = new NotificationsService()
 
     notificationsService.notify(
-      nonConectedUsers.map(u => u.notificationToken),
+      disconnectedRoomUsers.map(u => u.notificationToken),
       'Nova mensagem',
       'Tem nova mensagem para você!'
     )
