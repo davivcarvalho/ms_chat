@@ -24,7 +24,7 @@ async function bootstrap() {
               brokers: String(process.env.KAFKA_HOST).split(',')
             },
       consumer: {
-        groupId: 'chat-consumer'
+        groupId: 'ldbhhudy-chat'
       }
     }
   })
